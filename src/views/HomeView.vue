@@ -1,10 +1,11 @@
 <template>
   <div>
     <div class="home-container">
-      <div class="user-img-container"></div>
+      <div class="user-img-container one"></div>
+      <div class="user-img-container two"></div>
       <div class="bg-container-home"></div>
+      <TopBar />
       <div class="home-content-box flex flex-column">
-        <TopBar />
         <div class="home-content container">
           <h2>Why partner with Auto-Tune?</h2>
           <div class="flex align-center">
@@ -14,9 +15,7 @@
         </div>
       </div>
     </div>
-    <firstPerson />
-    <secondPerson />
-    <thirdPerson />
+    <PersonContainer />
     <SubscriptionsSection />
     <PluginsSection />
     <FAQSection />
@@ -26,31 +25,52 @@
 
 <script>
 import TopBar from "../components/home/TopBar.vue";
-import firstPerson from "../components/home/firstPerson.vue";
-import secondPerson from "../components/home/secondPerson.vue";
-import thirdPerson from "../components/home/thirdPerson.vue";
+import PersonContainer from "../components/home/PersonContainer.vue";
 import PluginsSection from "../components/home/PluginsSection.vue";
 import SubscriptionsSection from "../components/home/SubscriptionsSection.vue";
 import AffiliateSection from "../components/home/AffiliateSection.vue";
 import FAQSection from "../components/home/FAQSection.vue";
+
+// GSAP Imports
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
+gsap.registerPlugin(ScrollTrigger);
+
 export default {
+  mounted() {
+    this.topBarAnimation();
+  },
+  methods: {
+    topBarAnimation() {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ".home-container",
+          start: "top top",
+          end: "bottom top",
+          scrub: 4,
+        },
+      });
+      tl.to(".user-img-container.one", {
+        x: 600,
+      }).to(
+        ".user-img-container.two",
+        {
+          x: -600,
+        },
+        "<"
+      );
+    },
+  },
   components: {
     TopBar,
-    firstPerson,
-    secondPerson,
-    thirdPerson,
+    PersonContainer,
     SubscriptionsSection,
     PluginsSection,
     FAQSection,
     AffiliateSection,
   },
-  mounted() {},
   data() {
-    return {
-      lastPosition: 0,
-      showMyItem: true,
-    };
+    return {};
   },
-  methods: {},
 };
 </script>
